@@ -6,6 +6,7 @@ import Button from '../button/button.component';
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 
+
 import './sign-up-form.styles.scss';
 
 const defaultFormFields = {
@@ -13,20 +14,21 @@ const defaultFormFields = {
     email: '',
     password: '',
     confirmPassword: '',
-}
+};
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
+
     
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
-    }
+    };
     
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if(password != confirmPassword) {
-            alert("passwords don't match!");
+            alert('passwords dont match!');
             return;
         } 
 
@@ -36,6 +38,8 @@ const SignUpForm = () => {
                 password
             );
             
+            
+
             await createUserDocumentFromAuth(user, { displayName });
             resetFormFields();
 
