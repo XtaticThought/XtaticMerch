@@ -1,18 +1,12 @@
-import {useState} from 'react';
-
-import { useDispatch } from 'react-redux';      
+import {useState} from 'react';    
 
 import FormInput from '../form-input/form-input.component';
-
 import Button from '../button/button.component';
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 
-//import {SignUpContainer} from './sign-up-form.styles';
+import { SignUpContainer } from './sign-up-form.styles';
 
-import { signUpStart } from '../../store/user/user.action';
-
-import './sign-up-form.styles.scss';
 
 const defaultFormFields = {
     displayName: '',
@@ -20,11 +14,10 @@ const defaultFormFields = {
     password: '',
     confirmPassword: '',
 };
+
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
-    const dispatch = useDispatch();
-
     
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
@@ -33,71 +26,75 @@ const SignUpForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if(password != confirmPassword) {
+        if(password !== confirmPassword) {
             alert('passwords dont match!');
             return;
         } 
 
         try {
-            dispatch(signUpStart(email, password, displayName));
+            const{ user } = await createAuthUserWithEmailAndPassword(email, password);
+            
+            await createUserDocumentFromAuth( user, { displayName });
             resetFormFields();
-
-        } catch(error) {
-            if(error.code == 'auth/email-already-in-use') {
+        } catch (error) {
+            if(error.code === 'auth/email-already-in-use') {
                 alert('Cannot create user, email already in use');
-            } else{
+            } else {
                 console.log('user creation encountered an error', error);
-
             }
         }
     };
 
     const handleChange = (event) => {
         const {name, value} = event.target;
-        setFormFields({...formFields, [name]: value});
+
+        setFormFields({ ...formFields, [name]: value});
     };
+
+
     return (
-       <div className='sign-up-container'>
+       <SignUpContainer>
         <h2>Don't have an account?</h2>
         <span>Sign Up with your Email and Password</span>
         <form onSubmit={handleSubmit}>
             <FormInput 
-                label="Display Name" 
+                label='Display Name' 
                 type='text' 
                 required 
                 onChange={handleChange} 
-                name="displayName" 
+                name='displayName' 
                 value={displayName}
             />
             
             <FormInput
-                label="Email" 
+                label='Email' 
                 type='email' 
                 required 
                 onChange={handleChange} 
-                name="email" 
+                name='email' 
                 value={email}
             />
             
             <FormInput 
-                label="Password" 
+                label='Password' 
                 type='password' 
                 required 
                 onChange={handleChange} 
-                name="password" 
+                name='password' 
                 value={password}
             />
             
             <FormInput 
-                label="Confirm Password" 
+                label='Confirm Password' 
                 type='password' 
                 required 
                 onChange={handleChange} 
-                name="confirmPassword" 
-                value={confirmPassword}/>
-            <Button type='submit'>Sign Up </Button>
+                name='confirmPassword' 
+                value={confirmPassword}
+            />
+            <Button type='submit'>Sign Up</Button>
         </form>
-       </div>
+       </SignUpContainer>
     );
 };
 
