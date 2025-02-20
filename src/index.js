@@ -1,12 +1,12 @@
 import React from 'react';
 //import ReactDOM from 'react-dom';
 import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { UserProvider } from './contexts/user.context';
-import { CategoriesProvider } from './contexts/categories.context';
-import { CartProvider } from './contexts/cart.context';
+import { store, persistor } from './store/store';
 import './index.scss';
 
 import reportWebVitals from './reportWebVitals';
@@ -14,17 +14,13 @@ import reportWebVitals from './reportWebVitals';
 const rootElement = document.getElementById('root');
 render(
   <React.StrictMode>
-    <BrowserRouter>
-    <UserProvider>
-      <CategoriesProvider>
-        <CartProvider>
+    <Provider store={store}>
+      {/* <PersistGate persistor={persistor}> */}
+        <BrowserRouter>
           <App />
-        </CartProvider>
-      </CategoriesProvider>
-    </UserProvider>
-
-    
-    </BrowserRouter>
+        </BrowserRouter>
+      {/* </PersistGate> */}
+    </Provider>
     
   </React.StrictMode>,
   rootElement

@@ -33,6 +33,14 @@ const categories = [
             "imageUrl": 'https://i.ibb.co/QJk54nN/3dprintjewelry.png',
             route: 'shop/jewelry'
         },
+        {
+            "id": 6,
+            "title": 'Candles',
+            "imageUrl": 'https://i.ibb.co/3vpSCRT/candles.png',
+            route: 'shop/Candles'
+
+            
+        }
     ];
 
 
