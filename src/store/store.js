@@ -5,10 +5,8 @@ import storage from 'redux-persist/lib/storage';
 import { rootReducer } from './root-reducer';
 import redux from 'redux';
 import { legacy_createStore as createStore } from 'redux';
- import logger from 'redux-logger';
- import createSagaMiddleware from 'redux-saga';
+import logger from 'redux-logger';
 
- import { rootSaga } from './root-saga';
 
 // const persistConfig = {
 //     key: 'root',
@@ -16,7 +14,7 @@ import { legacy_createStore as createStore } from 'redux';
 //     whitelist: ['cart']
 // };
 
-const sagaMiddleware = createSagaMiddleware();
+//const sagaMiddleware = createSagaMiddleware();
 
 //const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -33,9 +31,7 @@ const middleWares = [
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        serializableCheck: false,
-    }).concat(middleWares),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(middleWares),
 });
 
 //sagaMiddleware.run(rootSaga);

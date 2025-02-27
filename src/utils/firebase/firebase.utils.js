@@ -43,9 +43,10 @@ const firebaseConfig = {
   export const auth  = getAuth();
   export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
   export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+ 
   export const db = getFirestore();
 
-  export const  addCollectionAndDocuments = async (collectionKey, objectsToAdd ) => {
+  export const  addCollectionAndDocuments = async (collectionKey, objectsToAdd, field ) => {
     const collectionRef = collection(db, collectionKey);
     const batch = writeBatch(db);
 
@@ -53,6 +54,7 @@ const firebaseConfig = {
       const docRef = doc(collectionRef, object.title.toLowerCase());
       batch.set(docRef, object);
     });
+
     await batch.commit();
     console.log('done');
   };
@@ -70,9 +72,9 @@ const firebaseConfig = {
     additionalInformation = {}
     ) => {
     if (!userAuth) return;
+    
     const userDocRef = doc(db, 'users', userAuth.uid);
 
-    console.log(userDocRef);
 
     const userSnapshot = await getDoc(userDocRef); 
 
@@ -91,16 +93,19 @@ const firebaseConfig = {
         console.log('error creating user', error.message);
       }
     }
-    return userSnapshot;
+
+    return userDocRef;
   };
 
   export const createAuthUserWithEmailAndPassword = async (email, password) => {
     if(!email || !password) return;
+
     return await createUserWithEmailAndPassword(auth, email, password);
   };
 
   export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     if(!email || !password) return;
+
     return await signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -108,15 +113,4 @@ const firebaseConfig = {
 
   export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
 
-  export const getCurrentUser = () => {
-    return new Promise((resolve, reject) => {
-      const unsubscribe = onAuthStateChanged(
-        auth, 
-        (userAuth) => {
-          unsubscribe();
-          resolve(userAuth);
-        },
-        reject
-      );
-    });
-  };
+  

@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 
-export const CartIconContainer = styled.div
-`
+export const CartIconContainer = styled.div`
   width: 45px;
   height: 45px;
   position: relative;
@@ -17,8 +16,7 @@ export const CartIconContainer = styled.div
   }
 `;
 
-export const ItemCount = styled.span
-`
+export const ItemCount = styled.span`
   position: absolute;
   font-size: 10px;
   font-weight: bold;

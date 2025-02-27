@@ -4,7 +4,7 @@ import { addItemToCart } from '../../store/cart/cart.reducer';
 import Button, {BUTTON_TYPE_CLASSES} from '../button/button.component';
 
 import{
-    ProductCartContainer,
+    ProductCardContainer,
     Footer,
     Name,
     Price,
